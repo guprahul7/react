@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import Moment from 'react-moment';
 
 const LAUNCH_QUERY = gql `
-query LaunchQuery($flight_number: String!) {
-    launch(flight_number: $flight_number) {
+query LaunchQuery($f_number_variable: Int!) {
+    launch(f_number: $f_number_variable) {
         flight_number
         mission_name
         launch_year
@@ -22,17 +22,28 @@ query LaunchQuery($flight_number: String!) {
 `;
 
 const Launch = (props) => {
-    const { flight_number } = props.match.params;
+    let { f_number_url } = props.match.params; //a matching parameter (:f_number_url) is referenced in app.js
+    f_number_url = parseInt(f_number_url); //defaults to a string in the url, so need to convert to int
+    //console.log("f_number_url=", f_number_url);
     const { loading, error, data } = useQuery(
                                         LAUNCH_QUERY, 
-                                        { variables: {flight_number} }
-                                    );
+                                        { variables: { f_number_variable: f_number_url } }
+                                    ); 
+    /*  gql helps us avoid the following redundancy -> variables: { f_number_variable: f_number_variable }
+        by letting us simply do this -> variables: { f_number_variable } provided f_number_variable 
+        is already assigned a value. Kind of like implicit assignation.
+    */
 
     const displayLaunch = () => {
         if (loading) return <h4>Loading...</h4>;
         if (error) console.log(error);
 
-    const { flight_number, mission_name, launch_success, launch_year, launch_date_local, rocket } = data.launch;
+        const { flight_number, 
+                mission_name, 
+                launch_success, 
+                launch_year, 
+                launch_date_local, 
+                rocket } = data.launch; //launch endpt/query of gql
 
         return (
             <div>

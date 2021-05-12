@@ -9,16 +9,10 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/guprahul7/react.git"
-  },
+  
   "author": "Rahul Gupta",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/guprahul7/react/issues"
-  },
-  "homepage": "https://github.com/guprahul7/react#readme",
+
   "dependencies": {
     "axios": "^0.21.1",
     "concurrently": "^6.0.2",

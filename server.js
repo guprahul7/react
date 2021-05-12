@@ -1,14 +1,15 @@
 
 //Set up requests, routes etc... //like imports
 const express = require('express');
-const {graphqlHTTP} = require('express-graphql'); 
+const { graphqlHTTP } = require('express-graphql'); 
 /* ^ uses destructuring equivalent to: const graphqlHTTP = require('express-graphql').graphqlHTTP;
 Note: require('express-graphql') returns an object with a property called graphqlHTTP that is the function you want to call.
 You're trying to call the object itself as if it was a function.
 */
 const schema = require('./schema'); //we have to create this file <schema.js> and this is where graphql stuff is gonna be
+const path = require('path'); //path is a nodejs module to work with file paths
 
-// Allow cross-origin
+// Allow cross-origin - to fix error of CORS when we fact that in the browser/inspect
 const cors = require('cors');
 
 
@@ -40,6 +41,11 @@ app.use('/graphql', graphqlHTTP({
   })
 );
 
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+})
 
 //Listen on a certain port
 const PORT = process.env.PORT || 5000; //if we deploy (eg. on heroku)

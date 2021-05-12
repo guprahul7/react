@@ -14,7 +14,8 @@ import Launch from './components/launch';
 import logo from './spacex_logo.png';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:5000/graphql',
+  //uri: 'http://localhost:5000/graphql',
+  uri: '/graphql',
   cache: new InMemoryCache()
 });
 
@@ -22,7 +23,7 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        {/* We wanna wrap evth. in our Router except the Provider above
+        {/* We wanna wrap evth. in our Router except the Provider above,
           since it is the outermost element here */}
       <Router>
         <div className="container">
@@ -32,7 +33,9 @@ class App extends Component {
             style={{ width:300, display: 'block', margin: 'auto'}}
           />
           <Route exact path="/" component={Launches}></Route>
-          <Route exact path="/launch/:flight_number" component={Launch}></Route>
+          <Route exact path="/launch/:f_number_url" component={Launch}></Route>
+          {/* This :f_number_url refers to the url mentioned in <Link> in launchitem.js, and is later 
+            * used to obtain the contents of the url in a variable using match.params in launch.js/}
         {/* instead of directly embedding <Launches/> here, we used router to same page and linked the component */}
         </div>
       </Router>
